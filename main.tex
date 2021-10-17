@@ -1,0 +1,902 @@
+\documentclass{notes}
+\usepackage{math55,quiver,lipsum}
+
+\usepackage{setspace}
+\onehalfspacing
+
+\makeheader{Rushil Mallarapu}{Thinking Categorically}
+
+\begin{document}
+
+\section{Introduction}
+
+\lipsum[1]
+
+\subsection{Basic Definitions}
+
+\begin{defn}
+    A \emph{field} $\left( k,+,\times  \right) $ is a set with two operations:
+    \begin{itemize}
+        \item $\left( k,+ \right) $ is an abelian group with identity 0,
+        \item $\left( k^*=k-\{0\} ,\times  \right) $ is an abelian group with identity 1,
+        \item Distributive law: $a\left( b+c \right) = ab+ab$.
+    \end{itemize}
+\end{defn}
+
+\begin{example}
+    Some fields of characteristic 0, e.g. $\underbrace{1+\ldots+1}_{n}=n\cdot 1\neq 0$, are \Q, \R, and \C.
+    However,  $\F_p=\Z /p$ with $p$ prime have characteristic $p$.
+\end{example}
+
+\begin{defn}
+    A \emph{vector space} over $k$ is a set $V$ with the following operations and properties:
+    \begin{itemize}
+        \item Addition: $+\colon V\times V \to V $,
+        \item $\left( V,+ \right) $ is an abelian group with identity $0\in V$,
+        \item Scalar multiplication: $k\times V\to V$,
+        \item $(ab)v=a(bv)$ for all  $a,b\in k$ and $v\in V$ (associativity),
+        \item $a(v+w)=av+aw$ for all $a\in k$ and $v\in V$ (distributivity).
+    \end{itemize}
+
+    A \emph{subspace} is a set $W\subset V$ where $0\in W$ and $W$ is closed under $+,\times $.
+\end{defn}
+
+\begin{example}
+    $k^n$, $k[x]$ (i.e. polynomials in $k$), et cetera.
+\end{example}
+
+\begin{defn}
+    The \emph{span} of a set of vectors ${v}_{1},\ldots,{v}_{n}$ is the subspace spanned by all $\{v_i\}$, i.e.
+    \[
+        \spn\left( {v}_{1},\ldots,{v}_{n} \right) =\left\{\sum a_iv_i \mid a_i\in k \right\} \subseteq V
+    .\] 
+
+    We say $\{v_i\}$ spans $V$ if $\spn(\{v_i\})=V$.
+\end{defn}
+
+\begin{defn}
+    Say $\{v_i\} $ are \emph{linearly independent} if $a_1v_1+\ldots+a_nv_n=0\implies a_i=0 \forall i$.
+\end{defn}
+
+\begin{defn}
+    A \emph{basis} is a set of linearly independent vectors $\{v_i\} $ which span $V$. Equivalently, we have an isomorphism
+    
+    \begin{align*}
+        \text{basis}\colon k^n  &\longrightarrow V \\
+        \{a_i\}  &\longmapsto \sum a_iv_i
+    .\end{align*} 
+\end{defn}
+
+\begin{theorem}
+    All bases of $V$ have the same cardinality $=\dim V$.
+\end{theorem}
+
+\begin{corollary}
+    Any linearly independent set $\{v_i\}\subseteq V $ can be completed to a basis.
+\end{corollary}
+
+\begin{defn}
+    The set $\Hom(V,W)$ of \emph{linear maps} from $V$ to $W$, with $V,W$ vector spaces over $k$, is a vector space. Linear maps $\phi \colon V \to W\in \Hom(V,W)$ satisfy $\phi \left( u+v \right) =\phi (u)+\phi (v)$ and $\phi (\lambda u)=\lambda \phi (u)$.  
+\end{defn}
+
+\begin{theorem}[Matrices]
+    Given bases $\{v_i\}$ and $\{w_j\}$ of $V,W$ with $\dim V=n, \dim W=m$, represent $v=\sum x_iv_i$ by column vector $X=({x}_{1},\ldots,{x}_{n})^{t}$ and $\phi \in \Hom(V,W)$ by matrix $A=(a_{ij})$ whose columns represent $\phi (v_j)$ in basis $\{w_j\}$, i.e. $\phi (v_i)=\sum a_{ij}w_j$. Then $\phi (v)$ is represented in basis $w_j$ by column vector $Y=AX$. In other words, the following diagram commutes.
+
+\[\begin{tikzcd}
+	V & W \\
+	{k^n} & {k^m}
+	\arrow["\phi", from=1-1, to=1-2]
+	\arrow["{\text{basis}}"', from=2-2, to=1-2]
+	\arrow["{\text{basis}}"', from=2-1, to=1-1]
+	\arrow["A"', from=2-1, to=2-2]
+\end{tikzcd}\]
+\end{theorem}
+
+\begin{corollary}[Change of Basis]
+    Given a \emph{change of basis matrix} $P=(p_{ij})=\mathcal{M} (\id, \{v_i'\}, \{v_i\})$, i.e. $v_j'=\sum p_{ij}v_i$, then for any $\phi \colon V \to V $, we have $\mathcal{M} (\phi ,\{v_i'\})=A'=P^{-1} AP $.
+\end{corollary}
+
+\begin{theorem}
+    We have an \emph{direct sum decomposition} of $V$ as $V\cong W_1 \oplus \ldots \oplus W_n $ if
+
+    \begin{itemize}
+        \item $W_i$ span $V$: $\forall v\in V \exists w_i\in W_i \text{s.t.} v={w}_{1}+\ldots+{w}_{n} $,
+        \item $W_i$ are independent: ${w}_{1}+\ldots+{w}_{n} =0$, $w_i\in W_i\implies w_i=0 \forall i$.
+    \end{itemize}
+    
+    Equivalently, $\phi \colon \bigoplus W_i\to V$ with $\{w_i\}\mapsto \sum w_i$ is an isomorphism.
+\end{theorem}
+
+\begin{corollary}
+    Given $V$ finite dimensional, $V=W_1\oplus W_2$ iff $W_1 \cap W_2$ and $\dim W_1+\dim W_2=\dim V$.
+\end{corollary}
+
+\begin{defn}
+    For any $\phi \in \Hom(V,W)$ for vector spaces $V,W$, we define
+    \begin{itemize}
+        \item the \emph{kernel} of $\phi $: $\ker\phi =\left\{ v\in V\mid  \phi (v)=0 \right\}\subseteq V $,
+        \item the \emph{image} of $\phi $: $\im\phi =\left\{ w\in W\mid  \exists v\in V,\, \phi (v)=w \right\}\subseteq W $. 
+    \end{itemize}
+\end{defn}
+
+\begin{theorem}[Rank-Nullity Theorem]
+    Given $V,W$ finite dimensional, for any $\phi \in \Hom(V,W)$ we have $\dim V=\dim\ker\phi +\underbrace{\dim\im\phi }_{=\rank\phi }$.
+\end{theorem}
+
+\begin{remark}
+    There exists bases of $\{v_i\} $ of $V$, $\{w_j\} $ of $W$ such that $\mathcal{M} (\phi )=\begin{pmatrix} I_{r\times r} & 0 \\ 0 & 0 \end{pmatrix} $, where $r=\rank\phi $ and $n-r=\nll\phi $.
+\end{remark}
+
+
+\subsection{Dual and Quotient Spaces}
+
+\begin{defn}
+    The \emph{dual vector space} of $V$ is defined as $V^*=\Hom(V,k)$.
+\end{defn}
+
+\begin{theorem}
+    Given a basis of (finite dimensional) $V$ $\{e_i\} $, there exists a dual basis $\{e_i^*\} $ of $V^*$ such that $e_i^*(e_j)=\delta_{ij}=\begin{cases}1 & i=j \\ 0 & \text{else} \end{cases}$.
+\end{theorem}
+
+\begin{theorem}[Double Dual]
+    We have a natural isomorphism from $V$ to $V^{**}=\Hom(V,V\to k)$ (for finite dimensional $V$) given by
+    \begin{align*}
+        V &\longrightarrow V^{**} \\
+        v &\longmapsto \ev_v\colon(\ell \mapsto \ell (v))
+    .\end{align*}
+    If $\dim V=\infty $, then this map is simply injective.
+\end{theorem}
+
+\begin{defn}
+    The \emph{annihilator} of $U\subseteq V$ is $\Ann(U)=\left\{ \ell \in V^* \mid  \ell (u)=0\,\forall u\in U \right\}\subseteq V^* $
+\end{defn}
+
+\begin{corollary}
+    $\dim\Ann U=n-\dim U$.
+\end{corollary}
+
+\begin{defn}
+    The \emph{transpose} of $\phi \in \Hom(V,W)$ is $\phi^t \colon W^* \to V^*$, where $\phi^t(\ell )=\ell \circ\phi $. Additionally,
+    \begin{itemize}
+        \item $\ker\phi ^t=\Ann(\im\phi )$,
+        \item $\im\phi^t=\Ann(\ker\phi ) $ if $\dim V<\infty $,
+        \item $\mathcal{M} (\phi ^t,\{f_j^*\} ,\{e_i^*\} =\mathcal{M} (\phi )^t$.
+    \end{itemize}
+\end{defn}
+
+\begin{defn}
+    The \emph{quotient vector space} for some subspace $U\subseteq V$ is given by $V/U=\left\{ \text{cosets } v+U \right\} $. We have that
+
+    \begin{align*}
+        q\colon V &\longrightarrow V/U \\
+        v &\longmapsto v+U
+    ,\end{align*}
+
+    is surjective with $\ker q=U$. This means the following diagram commutes, where any $\phi \in \Hom(V,W)$ factors through $V/U$ iff $U\subseteq \ker\phi $.
+
+\[\begin{tikzcd}
+	V && W \\
+	& {V/U}
+	\arrow["\phi", from=1-1, to=1-3]
+	\arrow["q"', from=1-1, to=2-2]
+	\arrow["{\exists \overline{\phi}}"', from=2-2, to=1-3]
+\end{tikzcd}\]
+\end{defn}
+
+\subsection{Eigenspaces}
+
+The motivation for looking at invariant subspaces and eigenspaces is that they provide a concise way of determining the action of a linear operator, e.g. an operator in the set of endomorphisms $\End(V)=\Hom(V,V)$ of a vector space $V$. Note that vector spaces are special in how they can be characterized in such a way!
+
+\begin{defn}
+    $W\subseteq V$ is an \emph{invariant subspace} for $\phi \in \Hom(V,W)$ if $\phi(W)\subseteq W $.
+\end{defn}
+
+\begin{example}
+    $\ker \phi$, $\im \phi$, eigenspaces $\ker (\phi -\lambda I)$.
+\end{example}
+
+\begin{theorem}
+If $V=\bigoplus V_i$, $V_i$ invariant for $\phi $, then there exists a basis where $\mathcal{M} (\phi )$ is block diagonal, i.e. $\mathcal{M} (\phi )=\begin{pmatrix} \phi _{\mid V_1} & 0 \\ 0 & \phi _{\mid V_2} \end{pmatrix} $ 
+\end{theorem}
+
+\begin{corollary}
+    A basis of \emph{eigenvectors} $v_i\in V$, $v_i \neq 0$, $\phi (v_i)=\lambda _iv_i$ exists iff $\phi $ is \emph{diagonalizable}, i.e.
+    \[
+        \mathcal{M} (\phi ,\{v_i\})=\begin{pmatrix} \lambda _1 & \ldots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \ldots & \lambda _n \end{pmatrix} 
+    .\] 
+\end{corollary}
+
+\begin{corollary}
+    Eigenvectors of $\phi $ for distinct eigenvalues are linearly independent.
+\end{corollary}
+
+\begin{theorem}
+    If $k$ is algebraically closed (e.g. $\C $), then any linear operator $\phi \in \Hom (V,W)$ has an eigenvector.  
+\end{theorem}
+
+\begin{corollary}
+    For any $\phi \in \Hom (V,W)$ there exists a basis in which $\mathcal{M} (\phi )$ is upper triangular. It holds that $\lambda \in k$ is an eigenvalue of $\phi $ iff $(\phi -\lambda )$ is not invertible iff $\lambda $ appears on the diagonal of a triangular matrix for $\phi $.
+\end{corollary}
+
+\begin{defn}
+    We have the following notions:
+
+    \begin{itemize}
+        \item The \emph{generalized kernel} is $\gKer (\phi )=\ker (\phi ^N)$ for all $N$ large, e.g. $\ge \dim V$.
+        \item $\phi $ is \emph{nilpotent} if $\phi ^N=0$; $\ker \phi \subseteq \ker \phi^2 \subseteq \ldots   $, and there exists a basis s.t. $\mathcal{M} (\phi )$ is block diagonal with blocks
+        \[
+            \begin{pmatrix} 0 & 1 & & 0 \\ & \ddots & \ddots & \\ &  & \ddots & 1 \\ * & & & 0 \end{pmatrix} 
+        .\] 
+    \item Generalized eigenspaces $V_{\lambda }=\gKer (\phi -\lambda )=\ker (\phi -\lambda )^N$ are linearly independent invariant subspaces.
+    \end{itemize}
+\end{defn}
+
+\begin{theorem}
+    If $k$ is algebraically closed then $V=\bigoplus V_\lambda $ of the generalized eigenspaces of $\phi $. This gives the \emph{Jordan normal form}: $\mathcal{M} (\phi )$ block diagonal with blocks of form
+    \[
+        \begin{pmatrix} \lambda  & 1 & & 0 \\ & \ddots & \ddots & \\ &  & \ddots & 1 \\ *  & & & \lambda  \end{pmatrix} 
+    .\]  
+\end{theorem}
+
+\begin{remark}
+    $\phi $ is diagonalizable iff all blocks have size 1.
+\end{remark}
+
+\begin{defn}
+    The \emph{characteristic polynomial} of $\phi $ is  $\chi_\phi (x)=\det(xI-\phi )=\prod_{\lambda _i} (x-\lambda _i)^{n_i}$, where $n_i=\text{mult}(\lambda _i) = \dim V_{\lambda _i}  $.
+
+    The \emph{minimal polynomial} is $\mu _\phi (x)=\prod_{\lambda _i} {\left( x-\lambda _i \right) ^{m_i}} $, $m_i=\text{min}\left\{ m\mid  V_{\lambda _i}=\ker (\phi -\lambda _i)^m \right\} =$ size of largest Jordan block in $V_{\lambda _i}$.
+\end{defn}
+
+\begin{theorem}[Cayley-Hamilton]
+    $p(\phi )=0$ iff $ \mu _\phi \mid  p(x)$. In particular $\mu _\phi \mid  \chi _\phi $.
+\end{theorem}
+
+\begin{corollary}
+    Every linear operator satisfies its own characteristic equation.
+\end{corollary}
+
+
+\begin{remark}
+    $\phi $ is diagonalizable iff $m_i=1\,\forall i$.
+\end{remark}
+
+\begin{theorem}
+    Over $\R $, $\phi \colon V \to V $ need not have eigenvectors, but considering $V_{\C }=V\times V=\left\{ v+iw\mid  v,w\in V \right\} $ and $\phi _{\C }\colon V_{\C } \to V_{\C } $, where $\phi _{\C }(v+iw)=\phi (v)+i\phi (w)$, we have that any real operator has an invariant subspace of dimension 1 (i.e. an eigenvector) or dimension 2!
+\end{theorem}
+
+\subsection{Category Theory}
+
+Brief digression into category theory: due to the fact that categories provide a framework for expressing very general correspondances between different flavors of mathematical structure!
+
+\begin{defn}
+    \emph{Categories} have objects and morphisms $\Mor (A,B)$ for all $A,B\in \text{ob }\mathcal{C} $, with operation given by composition. They obey the following axioms:
+    \begin{itemize}
+        \item $\forall A\in \text{ob }\mathcal{C}$, $\exists \id _A\in \Mor (A,A)$ s.t. $f\circ \id _A=\id _B\circ f=f$,
+        \item $(f\circ g)\circ h=f\circ(g\circ h)$ (associativity). 
+    \end{itemize}
+\end{defn}
+
+\begin{example}
+    Sets, groups, vector spaces over $k$, topological spaces, and more!
+\end{example}
+
+\begin{defn}
+    A (covariant) \emph{functor} $F\colon \mathcal{C}  \to \mathcal{D}  $ assigns
+    \begin{itemize}
+        \item to each $X\in \text{ob }\mathcal{C}$, $F(X)\in \text{ob }\mathcal{D} $,
+        \item to $f\in \Mor _{\mathcal{C} }(X,Y)$, $F(f)\in \Mor _{\mathcal{D} }(F(X),F(Y))$,
+    \end{itemize}
+
+    such that $F(\id _X)=\id _{F(X)}$ and $F(g\circ f)=F(g)\circ F(f)$.
+    
+    Contravariant functors reverse the direction of morphisms and the associated axiom.
+\end{defn}
+
+\begin{theorem}
+    There is a natural transformation $t$ between functors $F,G\colon \mathcal{C}  \to \mathcal{D}  $ given by taking for each $X\in \text{ob }\mathcal{C} $, $t_X\in \Mor _{\mathcal{D}}(F(X),G(X))$ s.t.
+
+    \[\begin{tikzcd}
+	X & {F(X)} & {G(X)} \\
+	Y & {F(Y)} & {G(Y)}
+	\arrow["{\forall f}"', from=1-1, to=2-1]
+	\arrow["{t_X}", from=1-2, to=1-3]
+	\arrow["{t_Y}", from=2-2, to=2-3]
+	\arrow["{G(f)}", from=1-3, to=2-3]
+	\arrow["{F(f)}"', from=1-2, to=2-2]
+    \end{tikzcd} \text{commutes.}\]
+\end{theorem}
+
+\subsection{Bilinear Forms}
+
+\begin{defn}
+    A \emph{bilinear form} on $V$ is $b\colon V\times V \to k $, with linearity in each input, i.e.
+    \begin{itemize}
+        \item $b(u+v,w)=b(u,w)+b(v,w)$,
+        \item $b(u,v+w)=b(u,v)+b(u,w)$,
+        \item $b(\lambda u,v)=b(u,\lambda v)=\lambda b(u,v)$.
+    \end{itemize}
+    
+    $b$ is \emph{symmetric} if $b(u,v)=b(v,u)$, and  \emph{skew-symmetric} if $b(u,v)=-b(v,u)$.
+\end{defn}
+
+\begin{theorem}
+    There is a natural isomorphism given by
+    \begin{align*}
+        B(V)=\left\{ \text{bilinear } b\colon V\times V \to k  \right\} &\longrightarrow \Hom (V,V^{*}) \\
+        b &\longmapsto \phi _b\colon v \to \left( b(v,\cdot )\colon V \to k  \right)  
+    .\end{align*}
+
+    Then, $\rank b=\rank \phi _b$, and $b$ is \emph{nondegenerate} if $\phi _b\colon V \to V^* $ is an isomorphism.
+\end{theorem}
+
+\begin{fact}
+    In a basis $\{e_i\}$ of $V$, $b$  is represented by a matrix $B=(b_{ij})=(b(e_i,e_j))$.
+    If $u=\sum x_ie_i$, $v=\sum y_ie_i$ are represented by column vectors $X,Y$, then $b(u,v) = X^t B Y $.
+\end{fact}
+
+\begin{defn}
+    The  \emph{orthogonal complement} of $S\subseteq V$ for $b$ is $S^{\perp}=\left\{ v\in V\mid  b(v,w)=0\,\forall w\in S \right\} =\ker (v\mapsto \phi _b(v)_{|S}\colon V\to S^{*})$.
+\end{defn}
+
+\begin{theorem}
+    \begin{itemize}
+        \item If $b$ is nondegenerate, then $\dim S^{\perp}=\dim  V-\dim S$.
+        \item If $b$ is an inner product then $S\cap S^{\perp}=\{0\}$ and $V=S\oplus S^{\perp}$.
+    \end{itemize}
+\end{theorem}
+
+\begin{defn}
+    A real \emph{inner product} $\left\langle \cdot ,\cdot  \right\rangle\colon V\times V \to  \R $ is a \emph{symmetric} \emph{positive definite} bilinear form. Here, positive definite means $\left\langle u,u \right\rangle=\norm{u}^2 >0\,\forall u\neq 0$.
+\end{defn}
+
+\begin{theorem}[Cauchy-Schwarz]
+    $\left\langle u,v \right\rangle\le \norm{u} \norm{v} $.
+\end{theorem}
+
+\begin{defn}
+    Over $\C $ we consider \emph{Hermetian inner products} $\left\langle \cdot ,\cdot  \right\rangle\colon V\times V\to \C $ which are
+    \begin{itemize}
+        \item sesquilinear, i.e. $\left\langle \lambda u,v \right\rangle=\overline{\lambda }\left\langle u,v \right\rangle$,
+        \item Hermitian symmetric, i.e. $\left\langle v,u \right\rangle=\overline{\left\langle u,v \right\rangle}$,
+        \item definite positive.
+    \end{itemize}
+    
+    The induced map $V\to V^{*}$ by $\left\langle \cdot ,\cdot  \right\rangle$ is $\C $-antilinear: $\phi (\lambda u)=\overline{\lambda }\phi(u)$.
+\end{defn}
+
+\begin{theorem}
+    Every finite dimensional inner product space (over $\R $ or $\C $) has an \emph{orthonormal basis}, i.e. a basis $\left( {e}_{1},\ldots,{e}_{n}  \right) $ such that $\left\langle e_i,e_j \right\rangle=\delta_{ij}$. (Can be exhibited via building by induction using Gram-Schmidt.)
+\end{theorem}
+
+\subsection{Spectral Theorem}
+
+\begin{defn}
+    Let $V$,$\left\langle \cdot ,\cdot  \right\rangle$ be an inner product space (over  $\R $ or $\C $), and $T\colon V \to V $ a linear operator. The \emph{adjoint} operator $T^{*}\colon V\to V$ satisfies $\left\langle u,Tv \right\rangle=\left\langle T^{*}u,v \right\rangle\, \forall u,v\in V$. It corresponds to the transpose of $T$ via $V\xrightarrow{\phi }V^{*}$ ; over $\C $, the complex conjugate of $T^t$.  
+\end{defn}
+
+\begin{fact}
+    In an orthonormal basis, $\mathcal{M} (T^*)=\mathcal{M} (T)^t$ (real case) or $\overline{\mathcal{M} (T)}^t$ (complex Hermitian case). In addition, $\ker T^{*}=(\im T)^{\perp}$ and vice versa.
+\end{fact}
+
+\begin{defn}
+    $T\colon V \to V $ is \emph{self-adjoint} if $T^*=T$.
+\end{defn}
+
+\begin{defn}
+    $T$ is \emph{orthogonal} (\emph{unitary} over $\C $) if $T^*=T^{-1}$, i.e. $\left\langle Tu,Tv \right\rangle=\left\langle u,v \right\rangle\,\forall u,v\in V$. In other words, $T$ maps orthonormal bases to orthonormal bases.
+\end{defn}
+
+\begin{remark}
+    If $S\subseteq V$ is invariant under a self-adjoint/orthogonal/unitary operator, then so is $S^{\perp}$. This motivates the \emph{spectral theorems} below.
+\end{remark}
+
+\begin{theorem}
+    \begin{itemize}
+        \item If $T\colon V \to V $ is self-adjoint, then $T$ is diagonalizable with real eigenvalues, and can be diagonalized in an orthonormal basis.
+        \item If $T\colon V \to V $ is orthogonal for a real inner product, then $V$ is a direct sum  of orthogonal invariant subspaces of $\dim 1$ or $\dim 2$, with $T$ acting by $\pm 1$ on the $1-\dim $ pieces and rotations on the $2-\dim $ pieces.
+        \item If $T\colon V \to V $ is unitary for a Hermitian inner product, then $T$ is diagonalizable in an orthonormal basis, with eigenvalues $|\lambda _i|=1$.
+    \end{itemize}
+\end{theorem}
+
+\begin{digression}
+    Besides inner products, one can also consider arbitrary nondegenerate symmetric bilinear forms (without assuming positivity); e.g. over $\R $ (resp. $\C $), $\exists $ orthogonal basis such that
+    \[
+        b(e_i,e_j)=\begin{cases}
+            \pm 1 & i=j\\
+            0 & i\neq j
+        \end{cases}
+        \left( \text{ resp. } b(e_i,e_j)=\delta_{ij} \right) 
+    ,\] 
+
+    or skew-symmetric bilinear forms.
+\end{digression}
+
+\subsection{Tensor Algebra}
+
+Note: oftentimes you'll hear of the "universal property of tensor products" – all this means is that the tensor product is unique and well-defined in some natural sense. This is a good intuition to have, but formalizing it and using it is... trickier.
+
+\begin{defn}
+    The \emph{tensor product} of two vector spaces $V,W$ is a vector space $V\otimes W$ with a bilinear map 
+    \begin{align*}
+        \pi \colon V\times W &\longrightarrow V\otimes W \\
+        (v,w) &\longmapsto v\otimes w
+    \end{align*}
+    such that bilinear maps $V\times W \xrightarrow{b} U$ correspond bijectively with linear maps $V\otimes W\xrightarrow{\phi} U$, via $\phi (v\otimes w)=b(v,w)$. In other words, the following diagram commutes:
+
+    \[\begin{tikzcd}
+	{V\times W} && U \\
+	& {V\otimes W}
+	\arrow["{\exists! \,\varphi}"', dashed, from=2-2, to=1-3]
+	\arrow["b", from=1-1, to=1-3]
+	\arrow["\pi"', from=1-1, to=2-2]
+    \end{tikzcd}\]
+
+    Elements of $V\otimes W$ are finite linear combinations $\sum v_i\otimes w_i$. If $\{{e}_i\}$ of $V$ and $\{{f}_j\}$ of $W$ are bases thereof, then $\{{e_i\otimes f_j}\}$ is a basis of $V\otimes W$.
+\end{defn}
+
+\begin{example}
+    $V^{*}\otimes W\cong \Hom (V,W)$ by mapping $\ell \otimes w\in V^{*}\otimes W$ to $(v\mapsto \ell (v)w)\in \Hom (V,W)$.
+\end{example}
+
+\begin{defn}
+    The \emph{trace} of an operator is conventionally given as $\tr \left( T\colon V \to V  \right) =\sum \lambda _i \in k$. It can also be defined as
+    \begin{align*}
+        \tr \colon \Hom (V,V)\cong V^{*}\otimes V &\longrightarrow k \\
+        \ell \otimes v &\longmapsto \ell (v)
+    .\end{align*}
+\end{defn}
+
+\begin{defn}
+    In a similar sense we have a correspondance
+    \[
+    \text{multilinear maps } V_1 \times \ldots \times V_n\to U \leftrightarrow \text{ linear maps } V_1\otimes \ldots \otimes V_n \to U
+    .\]  
+\end{defn}
+
+\begin{theorem}
+    The \emph{tensor power} $V^{\otimes n}=\underbrace{V\otimes \ldots \otimes V}_{n\text{ times}}$ contains subspaces
+    \begin{itemize}
+        \item $\Sym ^{n}(V)=$ \emph{symmetric tensors} ($\leftrightarrow $ symmetric multilinear maps) with $v_{\sigma(1)}\ldots v_{\sigma(n)}=v_1\ldots v_n$,
+        \item $\wedge^n (V)$ \emph{exterior powers}, or \emph{alternating tensors} with $v_{\sigma(1)}\wedge\ldots \wedge v_{\sigma(n)}=(-1)^{\sigma}v_1\ldots v_n$.
+    \end{itemize}
+\end{theorem}
+
+\begin{theorem}
+    If $\dim V=n$, then $\wedge^n V$ has $\dim 1$; for $T\colon V \to V$, $\wedge^nT\colon\wedge^nV\to \wedge^nV$ is multiplication by a scalar, the \emph{determinant}  $\det(T)\in k$. 
+\end{theorem}
+
+\subsection{Modules}
+
+Modules are a generalization of vector spaces – they'll technically show up again in representation theory.
+
+\begin{defn}
+    A \emph{module} over a ring $R$ (unlike a field, (commutative) rings do not require the existence of multiplicative inverses) is a set $M$ with two operations:
+    \begin{itemize}
+        \item addition, with $+\colon M\times M \to M $,
+        \item scalar multiplication, with $\times \colon R\times M \to M $.
+    \end{itemize}
+\end{defn}
+
+\begin{theorem}
+    Finitely generated modules need not have a basis; those which do are called \emph{free modules}.
+\end{theorem}
+
+\begin{theorem}
+    There is a bijection between $\Z$-modules and abelian groups.
+\end{theorem}
+
+\begin{lemma}
+    Every finitely generated $\Z $-module $M$ with generators $\left( {e}_{1},\ldots,{e}_{n}  \right) $ is a quotient of $\Z ^{n}$, with
+    \begin{align*}
+        \phi \colon \Z ^{n} &\twoheadrightarrow M \\
+        \{{a}_i\} &\mapsto \sum a_ie_i
+    .\end{align*}
+    Furthermore, $\ker \phi \subseteq \Z^{n}$ is a free module, i.e. $\exists T\colon \Z ^{m} \to \Z ^{n} $ such that $M\cong \Z ^{n}/\im T$.
+\end{lemma}
+
+This next theorem is an amazing application of integer linear algebra!
+
+\begin{theorem}
+    Every finitely generated abelian group is $\cong \Z ^{r}\times \Z /n_1\times \ldots \times \Z /n_k$ for integers $r,{n}_{1},\ldots,{n}_{k} $.
+\end{theorem}
+
+\begin{corollary}[Classification Theorem for Finite Abelian Groups]
+    Every finite abelian group is $\cong \Z /n_1\times \ldots \times \Z /n_k$ for integers ${n}_{1},\ldots,{n}_{k} $.
+\end{corollary}
+
+\section{Group Theory}
+
+\subsection{Basic Definitions}
+
+\begin{defn}
+    A \emph{group} $(G,\cdot )$ is a set with an operation $\cdot \colon G\times G \to G $ such that the following laws hold:
+    \begin{itemize}
+        \item Identity: $\exists e\in G$ s.t. $\forall g\in G$, $eg=ge=g$,
+        \item Inverse: $\forall g\in G$, $\exists g^{-1}\in G$ s.t. $gg^{-1}=e$,
+        \item Associativity: $\forall a,b,c\in G$, $(ab)c=a(bc)$.    
+    \end{itemize}
+    
+    If $G$ is commutative, i.e. $\forall g,h\in G\,gh=hg$, then it is \emph{abelian}.
+\end{defn}
+
+\begin{example}
+    $(\Z ,+)$, $(\Z /n,+)$, $(\C ^{*}, \cdot )$, symmetric group $S_n$; general linear group (of invertible matrices) $\GL_n(\R )$, etc.; direct products $G\times H$, $\Z ^n$.
+
+    Just like sets, groups can be finite ($\Z /n$, $S_n$, $\ldots $ ), countable ( $\Z $, $\Z ^{n}$, $\Q $, $\ldots $ ), or uncountable ($\R$, $\C $, $\ldots $ ).
+\end{example}
+
+\begin{defn}
+    $H\subseteq G$ is a subgroup if $e\in H$, $a\in H\implies a^{-1}\in H$, and $a,b\in H\implies ab\in H$.
+\end{defn}
+
+\begin{theorem}[Lagrange]
+    If $H\le G$, then $|H| \mid  |G|$. More specifically, $|G|=|H| [G\colon H]$, where $[G\colon H]$ is the number of cosets of $H$ in $G$.
+\end{theorem}
+
+\begin{example}
+    If $H,H'\le G$, then $H\cap H'\le G$. Furthermore, all subgroups of $(\Z ,+)$ are $\Z n=\left\{ mn\mid  m\in Z \right\} $ for some $n\ge 0$. 
+\end{example}
+
+\begin{defn}
+    A \emph{homomorphism} $\phi \colon G \to H $ is a map such that $\phi (ab)=\phi (a)\phi (b)$ for all $a,b\in G$. (Note this implies $\phi (a)^{-1}= \phi (a^{-1})$.) An \emph{isomorphism} is a bijective homomorphism, and an \emph{automorphism} is a bijective endomorphism. The set $(\Aut (G), \circ)$ itself is a group.
+\end{defn}
+
+\begin{defn}
+    Given a homomorphism $\phi \colon G \to H $, we define
+    \begin{itemize}
+        \item the \emph{kernel} of $\phi $: $\ker \phi =\left\{ g\in G\mid  \phi (g)=e_H \right\} \le G$, where $\phi \text{ injective }\iff \ker \phi =\{e\}$;
+        \item the \emph{image} of $\phi $: $\im \phi =\{\phi (g)\mid  g\in G\}\le H$, where $\phi \text{ surjective } \iff \im \phi =H$.
+    \end{itemize}
+\end{defn}
+
+\begin{defn}
+    Given $a\in G$, define $\phi\colon k\mapsto a^k\colon \Z \to G$, which is a homomorphism with $\im \phi =\left\langle a \right\rangle$, the subgroup of $G$ generated by $a$. As before, $\ker \phi =\Z n$, where $n=$ the order of $a$, which is $\min \left\{ n>0 \text{ s.t. } a^n=e \right\} $.
+    Thus, the  \emph{cyclic} group $\left\langle a \right\rangle$ is $\cong \Z /n$ if $a$ has order $n$, $\cong \Z $ if infinite order. (Ergo, ${a}_{1},\ldots,{a}_{k} $ generate $G$  if every element of G is a product of $a_i$ and their inverses).
+\end{defn}
+
+\begin{digression}
+    An \emph{equivalence relation} on a set $A$ can be thought of as a set defined by a relation $\sim $ on $A$ satisfying the following three axioms for all $a,b,c\in A$:
+    \begin{itemize}
+        \item reflexivity: $a\sim a$,
+        \item symmetry: $a\sim b\iff b\sim a$,
+        \item transitivity: $a\sim b,b\sim c\implies a\sim c$.
+    \end{itemize}
+\end{digression}
+
+\begin{theorem}
+    A subgroup $H\le G$ determines an equivalence relation given by $a\sim b$ iff $a^{-1}b\in H$, whose equivalence classes are the (left) \emph{cosets} $aH=\left\{ ah\mid  h\in H \right\} $.
+    The \emph{quotient set} $G/H$ is the set of cosets $aH$. The index of $H$ is $\left[ G:H \right] =|G/H|=|G|/|H|$, if $G$ is finite.
+\end{theorem}
+
+\begin{corollary}
+    For finite $G$ with $H\le G$, we have
+    \begin{itemize}
+        \item $|H| \mid  |G|$,
+        \item $a\in G\implies |\left\langle a \right\rangle| \mid  |G|$,
+        \item $|G|=p \text{ prime }\implies G\cong \Z/p$.
+    \end{itemize}
+\end{corollary}
+
+\begin{defn}
+    A subgroup $H\le G$ is \emph{normal} iff $aH=Ha$ for all $a\in G$, which holds iff $aHa^{-1}=H$ for all $a\in G$.
+\end{defn}
+
+\begin{theorem}
+    The operation $(aH)\cdot (bH)=abH$ makes $G/H$ a group iff $H$ is a normal subgroup.
+\end{theorem}
+
+\begin{theorem}
+    For all $\phi \colon G \to H $, $\ker \phi =K \trianglelefteq G$, and $\im \phi =G/K$.
+
+    If $\phi $ is surjective, we have an \emph{exact sequence} $\{1\}\to K\inj G\xrightarrow{\phi } H\to \{1\}$, where $\im i=\ker \phi $.
+\end{theorem}
+
+\begin{example}
+    We have the following exact sequences for $H\trianglelefteq G$:
+    \begin{itemize}
+        \item $\{1\}\to H\inj G\to G/H\to \{1\}$;
+        \item $0\to \Z /m\to \Z /mn\to \Z /n\to 0$ ($\Z /mn\cong \Z /m\times \Z /n$ iff $\gcd(m,n)=1$);
+        \item $\{e\}\to \Z/3\to S_3\xrightarrow{\text{sign}}A_3\cong \Z /2\to \{e\}$.
+    \end{itemize}
+\end{example}
+
+\begin{theorem}
+    A homomorphism $G\xrightarrow{\phi }H$ factors through $G\to G/K\xrightarrow{\overline{\phi }}H$ iff $K\le \ker \phi $.
+\end{theorem}
+
+\begin{defn}
+    $G$ is \emph{simple} if its only normal subgroups are $\{e\}$ and itself.
+\end{defn}
+
+ \begin{example}
+    Some simple groups include $\Z /p$ for prime $p$ and the alternating group $A_n$ for $n\ge 5$.
+\end{example}
+
+\begin{example}
+    The \emph{center} $Z(G)=\left\{ z\in G \mid  zg=gz\,\forall g\in G \right\} $ is a normal subgroup (abelian: $zz'=z'z$ ).
+\end{example}
+
+\begin{example}
+    The \emph{commutator} subgroup $[G,G]=\left\{ \prod_{\text{finite}} {[a_i,b_i]}  \right\}$, where $[a,b]=aba^{-1}b^{-1}$, is normal, and $G/[G,G]=\text{Ab}(G)$ (abelianization) is the largest abelian quotient of $G$. Thus, for all $G\xrightarrow{\phi }H$ with $H$ abelian, $\phi $ factors $G\to \text{Ab}(G)\xrightarrow{\overline{\phi }}H$.
+\end{example}
+
+\subsection{Group Actions}
+
+Group actions allow us to talk about groups as encoding the symmetries of an object! This is where Burnside's lemma of combinatorics fame arises!
+
+\begin{defn}
+    The  \emph{$G$-action} on a set $S$ is a function $(g,s)\mapsto g\cdot s\colon G\times S\to S$ such that for all $s \in S$ and $g,h\in G$, we have $es=s$ and $(gh)s=g(hs)$. There is a bijective correspondence between actions defined as such and homomorphisms $\rho\colon G \to \text{Perm}(S) $. An action is \emph{faithful} if $\rho$ is injective; \emph{transitive} if $\forall s,t\in S$ $\exists g$ s.t. $gs=t$ (i.e. there is only 1 orbit). 
+\end{defn}
+
+\begin{defn}
+    The \emph{orbit} of $s \in S$ is $\mathcal{O} _s=G\cdot s=\left\{ g\cdot s\mid  g\in G \right\} $. These form a partition of $S$ as $S=\bigsqcup\text{orbits}$.
+\end{defn}
+
+\begin{defn}
+    The \emph{stabilizer} of $s$ is $\Stab (s)=\left\{ g\in G\mid  g\cdot s=s \right\} \le G$.
+\end{defn}
+
+\begin{theorem}
+    Elements in the same orbit have conjugate stabilizer subgroups, i.e. $\Stab (g\cdot s)=g\Stab g^{-1}\le G$.
+\end{theorem}
+
+\begin{theorem}[Orbit-Stabilizer]
+    If $H=\Stab (s)$, then $gH\mapsto g\cdot s$ defines a bijection between $G/H$ and $\mathcal{O} _s$, with $|\mathcal{O} _s|\cdot |\Stab (s)|=|G|$.
+\end{theorem}
+
+\begin{lemma}[Burnside]
+    For $G,S$ finite, let $S^g=\left\{ s \in S\mid  gs=s \right\} $ be the fixed points of $g\in G$. Then,
+    \[
+    \text{\# orbits} = \frac{1}{|G|}\sum_{g\in G} {|S^g|} 
+    .\] 
+\end{lemma}
+
+\begin{example}
+    $G$ acts on itself by left multiplication. This gives $G\inj \text{Perm}(G)$, hence every finite group is isomorphic to a subgroup of $S_n$, where $n=|G|$.
+\end{example}
+
+\begin{theorem}[Class Equation]
+    $G$ acts on itself by \emph{conjugation}: $g$ acts by $h\mapsto ghg^{-1}$. Now, orbits are conjugacy classes, the stabilizer $\Stab (h)=\left\{ g\in G\mid  gh=hg \right\}=Z(h) $, the \emph{centralizer} of $h$.
+
+    Thus, we have that $|G|=\sum_{C\subset G} {|C|}$, where for each conj. class $|C_h|=\frac{|G|}{|Z(h)|}$ divides $|G|$.
+\end{theorem}
+
+\begin{corollary}
+    For $p$-groups ($|G|=p^k$), the class equation implies $|Z(G)|\ge p$ (the number of conj. classes of size 1). Thus, $|G|=p^2$, $p$ prime implies $G$ is abelian ($\cong \Z/p\times \Z/p$ or $\Z /p^2 $).
+\end{corollary}
+
+\begin{example}
+    There are 5 isomorphism classes of groups of order 8: $\Z /8$, $\Z /4\times \Z /2$, $\left( \Z /2 \right) ^3 $, $D_4$, $Q$.
+\end{example}
+
+\begin{example}
+    Considering finite subgroups $G\le SO(3)$, the group of all orthogonal transformations of $\R ^3 $ with determinant 1, and examining the action of $G$ on the poles, we have $G\cong $ one of $\Z /n$, $D_n$ (regular $n$-gon), $A_4$ (tetrahedron), $S_4$ (cube), $A_5$ (dodecahedron/icosahedron).
+\end{example}
+
+\subsection{Symmetric Group}
+
+\begin{theorem}
+    The \emph{symmetric group} $S_n$ is generated by transpositions $(ij)$, in fact by $s_i=(i\,i+1)$.
+\end{theorem}
+
+\begin{theorem}
+    For all permutations $\sigma$ in $S_n$, there exists a unique decomposition of $\sigma$ as a product of disjoint cycles $(a_1\ldots a_k)$. Moreover, two permutations $\sigma,\tau\in S_n$ are in the same conjugacy class iff they have the same cycle lengths. 
+\end{theorem}
+
+\begin{defn}
+    The \emph{alternating group} $A_n$ is defined as $A_n=\ker \left( \text{sign}\colon S_n \to \Z /2  \right)$. Similarly, it can be viewed as the set $\left\{ \text{products of even \# of transpositions} \right\} $. A conjugacy class in $S_n$ which consists of even permutations is either 1 or 2 conj. classes in $A_n$; it splits into 2 iff the centralizer $Z(\sigma)\subset A_n$ ($\iff $ cycle lengths of $\sigma$ are odd and distinct).
+\end{defn}
+
+\begin{theorem}
+    $A_n$ is simple for $n\ge 5$ ($A_4$ isn't: $\left\{ \id ,(ij)(kl) \right\} \cong \Z /2\times \Z /2$ is normal in $A_4$ and $S_4$).
+\end{theorem}
+
+\begin{remark}
+    This is why there is no closed formula for the roots of a polynomial of degree $\ge 5$! To learn why, dive into Galois theory...
+\end{remark}
+
+\subsection{Sylow Theorems}
+
+\begin{theorem}[Sylow Theorems]
+    Let $|G|=p^em$, $p\nmid m$. Then, a \emph{Sylow $p$-subgroup} of $G$ is a subgroup of order $p^e$.
+    \begin{itemize}
+        \item $\forall p$ prime where $p\mid  |G|$, $G$ contains a Sylow $p$-subgroup. (Consequence: $G$ contains an element of order $p$.)
+        \item All Sylow $p$-subgroup of $G$  are conjugates of each other, and every subgroup of order $p^k$ ($k\le e$) is contained in a Sylow subgroup.
+        \item The number $s_p$ of Sylow $p$-subgroups satisfies $s_p\equiv 1\pmod{p}$, $s_p|m=\frac{|G|}{p^e}$.
+    \end{itemize}
+\end{theorem}
+
+\begin{defn}
+    If $G$ has subgroups $N,H\le G$ such that $N\cap H=\{e\}$ (e.g. because $\gcd(|N|,|H|)=1$), and $|G|=|N| |H|$, then $\forall g\in G$ there is a unique $n\in N,h\in H$ such that $g=nh$.
+    
+    Now, if $N,H\trianglelefteq G$, then $G\cong N\times H$. However, if $N\trianglelefteq  G$ but not $H$, we have that $G$ is isomorphic to a \emph{semidirect product} $N\rtimes _\phi H$, where $\phi \colon H \to \Aut (N) $ is given by conjugation inside $G$. Thus, the group law is defined as $(n,h)\cdot (n',h')=(n\phi (h)(n'),hh')$. 
+\end{defn}
+
+\begin{theorem}
+    Given $H\le G$ (e.g. $p$-Sylow), the number of conjugate subgroups $gHg^{-1}\le G$ (e.g. all $p$-Sylow subgroups) is $|G/N(H)|$, where $N(H)$ is the \emph{normalizer} of $H$. This means $N(H)=\left\{ g\in G\mid  gHg^{-1}=H \right\} \le G$ is the largest subgroup of $G$ such that $H \trianglelefteq G$.
+\end{theorem}
+
+\begin{example}
+    We have the following classifications of finite groups as per Sylow's theorems:
+    \begin{itemize}
+        \item $|G|=15$: Sylow subgroups of order $3$ and $5$ are normal ($s_3=s_5=1)$, so $G\cong \Z /3\times \Z /5$.
+        \item $|G|=21$: $s_3\in \{1,7\}$ and $s_7=1$, so either $G\cong \Z /3\times \Z /7$ or $\Z /7\rtimes \Z /3$.
+        \item $|G|=12$: $s_2\in \{1,3\}$ and $s_3\in \{1,4\}$ and one is normal. This gives 5 isomorphism classes, $\Z /4\times \Z /3$, $\left( \Z /2 \right) ^2 \times \Z /3$, $A_4$, $D_6$, $\Z /3\rtimes \Z /4$.
+    \end{itemize}
+\end{example}
+
+\subsection{Free Groups}
+
+\begin{defn}
+    The \emph{free group}  on  $n$ generators is $F_n=\left\langle {a}_{1},\ldots,{a}_{n}  \right\rangle=\left\{ \text{all reduced words } a_{i_1}^{m_1}\ldots a_{i_k}^{m_k} \right\} $. Words in $a_i^{\pm 1}$ never simplify except $a_ia_i^{-1}=a_i^{-1}a_i=1$.
+\end{defn}
+
+\begin{theorem}
+    Any group $G$ with $n$ generators ${g}_{1},\ldots,{g}_{n} $ is a quotient of $F_n$ via $\phi \colon a_i\mapsto g\colon F_n\surj G$. $G$ is \emph{finitely presented} if $\ker \phi $ is generated by a finite set ${r}_{1},\ldots,{r}_{k} $ and their conjugates. We write $G\cong \left\langle {g}_{1},\ldots,{g}_{n} \mid  {r}_{1},\ldots,{r}_{k}  \right\rangle=F_n/\left\langle \text{normal subgroup generated by conjugates of $r_j$} \right\rangle$.
+\end{theorem}
+
+\begin{defn}
+    The \emph{Cayley graph} of $G$ with generators $g_i$: vertices are elements of $G$ and edges connect $g$ to $gg_i$ for all $g\in G$ and all $g_i$.
+\end{defn}
+
+\begin{defn}
+    A \emph{normal form} for elements of $G=\left\langle {g}_{1},\ldots,{g}_{n} \mid  {r}_{1},\ldots,{r}_{k}  \right\rangle$ is a set of words in $g_1 ^{\pm 1}\ldots g_n^{\pm 1}$ such that every element of $G$ appears exactly once among those words.
+\end{defn}
+
+\begin{example}
+    Some examples of groups and their generators:
+    \begin{itemize}
+        \item $S_n\cong \left\langle {s}_{1},\ldots,{s}_{n-1} \mid  s_i^2 =1,\,s_is_j=s_js_i\,\forall |i,j|\ge 2,\, s_is_{i+1}s_i=s_{i+1}s_is_{i+1} \right\rangle$.
+        \item $\SL_2(\Z )$ is generated by $S=\begin{pmatrix}0&-1\\1&0 \end{pmatrix} $ and $T=\begin{pmatrix} 1&1\\0&1 \end{pmatrix} $.
+        \item $\PSL_2(\Z )=\SL_2(\Z )/\{\pm I\}=\left\langle S,T\mid  S^2,(ST)^3  \right\rangle$
+    \end{itemize}
+\end{example}
+
+\section{Representation Theory}
+
+\subsection{Basic Definitions}
+
+\begin{defn}
+    A \emph{representation} of $G$ is a vector space $V$ on which $G$ acts by linear operators, i.e. $\rho \colon G \to \GL (V)$ is a homomorphism.
+
+    A \emph{subrepresentation} is a subspace $W\subseteq V$ invariant under $G$, with $\forall g\in G$ $g(W)=W$. $V$ is \emph{irreducible} if it has no nontrivial subrepresentations. 
+\end{defn}
+
+\begin{theorem}
+    For finite $G$ and finite dimensional $V$ over $\C $: every $g\colon V \to V $ has finite order, and $g^{n}=\id \implies $ diagonalizable, with $\lambda _j=e^{2\pi i k/n}$.
+\end{theorem}
+
+\begin{theorem}
+    If $G$ is abelian, all operators $g\colon V \to V$ are simultaneously diagonalizable, and so irreducible representations are 1-dimensional. These correspond to elements of the dual group $\gdual G=\Hom (G,\C^{*})$. (Note that $\gdual {\Z/m}\cong \Z /m$.) 
+\end{theorem}
+
+\begin{defn}
+    A \emph{homomorphism} of representations is a $G$-\emph{equivariant} linear map, i.e. $\phi (gv)=g\phi (v)$.
+\end{defn}
+
+\begin{theorem}
+    Let $V,W$ be representations of $G$. Then the following are representations of $G$ as well:
+    \begin{itemize}
+        \item $V\oplus W$;
+        \item $V\otimes W$ ($g\colon v\otimes w \mapsto  gv\otimes gw $);
+        \item $V^{*}$ ($\ell \mapsto \ell \circ g^{-1}$);
+        \item $V^{*}\otimes W\cong \Hom (V,W)$ ($\phi \mapsto g\circ\phi \circ g^{-1}$).
+    \end{itemize}
+
+    With respect to the final case, note that the invariant subspace $\Hom (V,W)^G$, given by $\left\{ \phi \in \Hom (V,W)\mid  g\phi =\phi \,\forall g\in G \right\} $ is equal to $\Hom _G(V,W)$.
+\end{theorem}
+
+\begin{theorem}
+    Any $\C $-representation of a finite group $G$ admits an invariant Hermitian inner product, with respect to which $G$ acts by unitary operators.
+\end{theorem}
+
+\begin{theorem}
+    If $V$ is a representation of a finite group (over $\C $), then for any $W\subseteq V$ invariant subspace there exists some $U\subseteq V$ invariant subspace such that $V=U\oplus W$. Thus any $\C $-representation of a finite group decomposes into a direct sum of irreducibles. 
+\end{theorem}
+
+\begin{lemma}[Schur]
+    Let $V,W$ be irreducible representations of $G$.
+    \begin{itemize}
+        \item Any homomorphism $\phi \in \Hom _G(V,W)$ is either 0 or an isomorphism;
+        \item All isomorphisms of an irreducible representation are multiples of $\id $: $\Hom _G(V,V)=\C \cdot \id _V$.
+    \end{itemize}
+\end{lemma}
+
+\begin{example}
+    Some representations of $S_n$:
+    \begin{itemize}
+        \item trivial representation $U=\C$, $\sigma$ acts by $\id $;
+        \item alternating representation $U'=\C $, $\sigma $ acts by $(-1)^{\sigma }$;
+        \item  standard representation ($\dim n-1$) $V=\left\{ {z}_{1},\ldots,{z}_{n} \mid  \sum z_i=0 \right\} \subset \C ^{n}$, $\sigma $ acts by permuting coordinates: $e_i\mapsto e_{\sigma (i)}$.
+    \end{itemize}
+
+    $U,U',V$ are the only irreducible representations of $S_3$.
+\end{example}
+
+\subsection{Characters}
+
+Characters enable us to encapsulate all the information about the eigenvalues of a conjugacy class of group elements, viewed as linear operators. Thus, they simplify many of the otherwise tedious arguments in breaking down finite representations into invariant ones.
+
+\begin{theorem}
+    Let $G$ be a group and $V$ a representation thereof. The \emph{character} is a function $\chi _V\colon G\to \C $, with $\chi _V(g)=\tr \left( g\colon V \to V  \right) $.
+\end{theorem}
+
+\begin{remark}
+    In terms of eigenvalues, $\tr (g)=\sum \lambda_i$, and $\tr (g^k)=\sum \lambda _i^k$, so $\chi _V$ recovers all symmetric polynomial expressions in $\{{\lambda }_i\}$.
+\end{remark}
+
+\begin{fact}
+    $\chi _V\colon G\to \C $ is a class function (invariant on conjugacy classes), i.e. $\chi _V(hgh^{-1})=\chi _V(g)$.
+\end{fact}
+
+\begin{theorem}
+    Let $V,W$ be representations of $G$. Then, we have that
+    \begin{itemize}
+        \item $\chi _{V\oplus W}=\chi _V+\chi _W$;
+        \item $\chi _{V\otimes W}=\chi _V\cdot \chi _W$;
+        \item $\chi _{V^{*}}=\overline{\chi _V}$;
+        \item $\chi _{\Hom (V,W)}=\overline{\chi _V}\chi _W$.
+    \end{itemize}
+\end{theorem}
+
+\begin{fact}
+    For a permutation representation, in which $G$ acting on $S$ corresponds to $G$ acting on $V$ with basis $\{{e}_{s}\}_{s \in S}$, with $g\cdot e_s=e_{g\cdot s}$, we have that
+    \[
+        \chi(g)=\#\left\{ s \in S\mid  g\cdot s=s \right\} =\left| S^g \right| 
+    .\] 
+\end{fact}
+
+\begin{defn}
+    The \emph{character table} of G lists, for each irreducible representation  $V_i$, the value of $\chi _{V_i}$ on each conjugacy class.
+\end{defn}
+
+\begin{example}
+    The character table of $D_4$ is
+    \[
+    \begin{array}{c|ccccc}
+    & 1 & 1 & 2 & 2 & 2 \\
+    D_4 & 1 & r^2 & r & s & sr \\\hline
+    \chi_1 & 1 & 1 & 1 & 1 & 1 \\
+    \chi_2 & 1 & 1 & -1 & 1 & -1 \\
+    \chi_3 & 1 & 1 & 1 & -1 & -1 \\
+    \chi_4 & 1 & 1 & -1 & -1 & 1 \\
+    \chi_V & 2 & -2 & 0 & 0 & 0 \\\hline
+    \chi_R & 8 & 0 & 0 & 0 & 0
+    \end{array}
+    .\] 
+\end{example}
+
+\begin{theorem}
+    Define
+    \[
+    \phi =\frac{1}{|G|}\sum _{g\in G}g\colon V \to V 
+    \]
+    as the projection from $V$ onto $V^G=\left\{ v\in V\mid  gv=v\,\forall g \right\} $, so $\dim V^G=\tr \phi=\frac{1}{|G|}\sum _{g}\chi _V(g)$.
+\end{theorem}
+
+\begin{theorem}
+    Let
+    \[
+        H(\alpha,\beta)=\frac{1}{|G|}\sum _{g\in G}\overline{\alpha(g)}\beta(g)
+    \]
+    be a Hermitian inner product on $\C _{\text{class}}(G)$, the space of class functions $G\to \C $. Then $\dim \Hom _G(V,W)=H(\chi _V,\chi _W)$.
+\end{theorem}
+
+\begin{theorem}
+    The characters of irreducible representations of $G$ form an \emph{orthonormal basis} of $(\C _{\text{class}}(G),H)$. In particular, the number of irreducible representations is equal to the number of conjugacy classes.
+\end{theorem}
+
+\begin{theorem}
+    The multiplicities $a_i$ in the decomposition of a $G$-representation $W\cong \bigoplus_iV_i^{\oplus a_i}$ are given by $a_i=\dim \Hom _G(V_i,W)=H(\chi _{V_i}\chi _W) $. Moreover, $H(\chi _W,\chi _W)=\sum a_i^2$.
+\end{theorem}
+
+\begin{corollary}
+    The regular representation of $G$ (the permutation representation for $G$ acting on itself by left multiplication) contains each irreducible representation $V_i$ with multiplicity $=\dim V_i$; therefore $|G|=\sum _i\left( \dim V_i \right) ^2 $.
+\end{corollary}
+
+\begin{fact}
+    These results allow us to construct character tables of various groups (e.g. $S_4$, $A_4$, $S_5$, $A_5$, $\ldots $) by starting from known representations, considering tensor products, and using $H(\cdot ,\cdot )$ pairings and orthogonality to find irreducible pieces and the missing irreducible representations.
+\end{fact}
+
+\end{document}
